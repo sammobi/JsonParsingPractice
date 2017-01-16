@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,15 +52,23 @@ public class MainActivity extends AppCompatActivity {
 
     public void parseWeatherData(String result) {
         try {
+            ArrayList<WeatherItem> weatherItems = new ArrayList<>();
+            Main main;
+            Weather weather;
+            WeatherItem weatherItem;
+            weatherItems.add(weatherItem);
             JSONObject jsonObject = new JSONObject(result);
             JSONObject CityJsonObject = jsonObject.getJSONObject("city");
             int id = CityJsonObject.getInt("id");
+
             String name = CityJsonObject.getString("name");
+
             mGetWeatherBtn.setText(name);
             JSONObject CordJsonObject = CityJsonObject.getJSONObject("coord");
 
             String cod = jsonObject.getString("cod");
             double message = jsonObject.getDouble("message");
+
             int cnt = jsonObject.getInt("cnt");
             JSONArray ListJsonArray = jsonObject.getJSONArray("list");
 

@@ -2,6 +2,8 @@ package com.example.android.jsonparsingpractice;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,6 +16,11 @@ import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     TextView mDateTimeTv, mWeatherTypeTv, mMinTempTv, mMaxTempTv, mDescriptionTv;
+    private RecyclerView mRecyclerView;
+
+    ArrayList<Main> mMainWeatherItem;
+
+    private RecyclerAdapter mRecyclerAdapter;
 
 
     @Override
@@ -89,6 +96,17 @@ public class MainActivity extends AppCompatActivity {
                     WeatherItem weatherItem = new WeatherItem(main, weather, Date);
                     weatherItems.add(weatherItem);
 
+                    mMainWeatherItem.add(weatherItems);
+
+                    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+
+                    mRecyclerAdapter = new RecyclerAdapter(this, mMainWeatherItem);
+
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+
+                    mRecyclerView.setLayoutManager(layoutManager);
+
+                    mRecyclerView.setAdapter(mRecyclerAdapter);
                 }
             }
             Log.d("DATA", weatherItems.toString());

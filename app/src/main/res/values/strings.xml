@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">JsonParsingPractice</string>
+    <string name="WeatherForeCastApp">Weather Forecast App</string>
+    <string name="getCurrentLocation">Current Location</string>
 </resources>

@@ -3,8 +3,7 @@ package com.example.android.jsonparsingpractice;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -14,21 +13,20 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
-    Button mGetWeatherBtn;
+    TextView mDateTimeTv, mWeatherTypeTv, mMinTempTv, mMaxTempTv, mDescriptionTv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mGetWeatherBtn = (Button) findViewById(R.id.getWeatherBtn);
-        mGetWeatherBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadUrl();
-            }
-        });
-
+        mDateTimeTv = (TextView) findViewById(R.id.tvDateTime);
+        mWeatherTypeTv = (TextView) findViewById(R.id.tvWeatherType);
+        mMinTempTv = (TextView) findViewById(R.id.minTempTv);
+        mMaxTempTv = (TextView) findViewById(R.id.maxTempTv);
+        mDescriptionTv = (TextView) findViewById(R.id.descTv);
+        downloadUrl();
 
     }
 
@@ -53,22 +51,14 @@ public class MainActivity extends AppCompatActivity {
     public void parseWeatherData(String result) {
         try {
             ArrayList<WeatherItem> weatherItems = new ArrayList<>();
-            Main main;
-            Weather weather;
-            WeatherItem weatherItem;
-            weatherItems.add(weatherItem);
+
             JSONObject jsonObject = new JSONObject(result);
             JSONObject CityJsonObject = jsonObject.getJSONObject("city");
             int id = CityJsonObject.getInt("id");
-
             String name = CityJsonObject.getString("name");
-
-            mGetWeatherBtn.setText(name);
             JSONObject CordJsonObject = CityJsonObject.getJSONObject("coord");
-
             String cod = jsonObject.getString("cod");
             double message = jsonObject.getDouble("message");
-
             int cnt = jsonObject.getInt("cnt");
             JSONArray ListJsonArray = jsonObject.getJSONArray("list");
 
@@ -84,16 +74,24 @@ public class MainActivity extends AppCompatActivity {
                 double grnd_level = MainJsonObject.getDouble("grnd_level");
                 int humidity = MainJsonObject.getInt("humidity");
                 int temp_kf = MainJsonObject.getInt("temp_kf");
+                Main main = new Main(temp, temp_min, temp_max, pressure, sea_level, grnd_level, humidity, temp_kf);
 
                 JSONArray WeatherJsonArray = json_data.getJSONArray("weather");
+                String Date = json_data.getString("dt_txt");
+
                 for (int j = 0; j < WeatherJsonArray.length(); j++) {
                     JSONObject json_weather_data = WeatherJsonArray.getJSONObject(j);
                     int weather_id = json_weather_data.getInt("id");
-                    String main = json_weather_data.getString("main");
+                    String main_weather = json_weather_data.getString("main");
                     String description = json_weather_data.getString("description");
                     String icon = json_weather_data.getString("icon");
+                    Weather weather = new Weather(weather_id, main_weather, description, icon);
+                    WeatherItem weatherItem = new WeatherItem(main, weather, Date);
+                    weatherItems.add(weatherItem);
+
                 }
             }
+            Log.d("DATA", weatherItems.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();

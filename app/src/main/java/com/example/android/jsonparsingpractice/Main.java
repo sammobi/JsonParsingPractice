@@ -12,6 +12,14 @@ public class Main {
         return temp_max;
     }
 
+    public double getTemp() {
+        return temp;
+    }
+
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+
     public void setTemp_max(double temp_max) {
         this.temp_max = temp_max;
     }

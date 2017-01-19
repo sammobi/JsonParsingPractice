@@ -17,16 +17,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainIt
 
     Context mContext;
 
-    private ArrayList<Main> mMainWeatherItem;
+    private ArrayList<WeatherItem> mWeatherItems;
 
-    public RecyclerAdapter(Context mContext, ArrayList<Main> mMainWeatherItem) {
+    public RecyclerAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mMainWeatherItem = mMainWeatherItem;
+    }
+
+    public void setmWeatherItems(ArrayList<WeatherItem> mWeatherItems) {
+        this.mWeatherItems = mWeatherItems;
+        notifyDataSetChanged();
     }
 
     @Override
     public MainItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, null);
 
         return new MainItemHolder(itemView);
 
@@ -34,24 +38,29 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainIt
 
     @Override
     public void onBindViewHolder(MainItemHolder holder, int position) {
-        final Main mainWeatherItem = mMainWeatherItem.get(position);
-        holder.mHighTempTv.setText((int) mainWeatherItem.getTemp_max());
-        holder.mLowTempTv.setText((int) mainWeatherItem.getTemp_min());
-
-
+        KelvinToFahrenheitUtil kelvinToFahrenheitUtil = new KelvinToFahrenheitUtil();
+        final WeatherItem weatherItem = mWeatherItems.get(position);
+        Main main = weatherItem.main;
+        holder.mHighTempTv.setText("Max Temp: " + String
+                .valueOf(kelvinToFahrenheitUtil.convertFahrenheitToCelsius(main.getTemp_max())));
+        holder.mLowTempTv.setText("Min Temp: " + String
+                .valueOf(kelvinToFahrenheitUtil.convertFahrenheitToCelsius(main.getTemp_min())));
+        holder.mDayTv.setText(weatherItem.Date_Time);
+        holder.mTempTv.setText("Current Temp: " + String
+                .valueOf(kelvinToFahrenheitUtil.convertFahrenheitToCelsius(main.getTemp())));
     }
 
     @Override
     public int getItemCount() {
-        if (mMainWeatherItem == null)
+        if (mWeatherItems == null)
             return 0;
-        return mMainWeatherItem.size();
+        return mWeatherItems.size();
 
     }
 
     public class MainItemHolder extends RecyclerView.ViewHolder {
 
-        private TextView mDayTv, mHighTempTv, mLowTempTv;
+        private TextView mDayTv, mHighTempTv, mLowTempTv, mTempTv;
 
 
         public MainItemHolder(View itemView) {
@@ -59,8 +68,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MainIt
             super(itemView);
 
             mDayTv = (TextView) itemView.findViewById(R.id.dayTv);
-            mHighTempTv = (TextView) itemView.findViewById(R.id.maxTempTv);
-            mLowTempTv = (TextView) itemView.findViewById(R.id.minTempTv);
+            mHighTempTv = (TextView) itemView.findViewById(R.id.dayTempHigh);
+            mLowTempTv = (TextView) itemView.findViewById(R.id.dayTempLow);
+            mTempTv = (TextView) itemView.findViewById(R.id.tempTv);
 
 
         }

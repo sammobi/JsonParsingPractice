@@ -29,6 +29,19 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tempTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/dayTv"
+                android:gravity="end"
+                android:text="20 degrees"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+
+            <TextView
                 android:id="@+id/dayTempHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

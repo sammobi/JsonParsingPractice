@@ -12,6 +12,20 @@ import com.squareup.okhttp.Response;
 
 public class OkHttpHandler extends AsyncTask<String, Void, String> {
 
+    /*ProgressDialog dialog;
+    @Override
+    protected void onPreExecute() {
+        this.dialog.setMessage("Progress start");
+        this.dialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        };
+    }*/
+
     OkHttpClient client = new OkHttpClient();
 
     @Override

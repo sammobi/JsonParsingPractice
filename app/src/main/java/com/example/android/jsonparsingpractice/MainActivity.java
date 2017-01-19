@@ -17,9 +17,6 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
     TextView mDateTimeTv, mWeatherTypeTv, mMinTempTv, mMaxTempTv, mDescriptionTv;
     private RecyclerView mRecyclerView;
-
-    ArrayList<Main> mMainWeatherItem;
-
     private RecyclerAdapter mRecyclerAdapter;
 
 
@@ -33,6 +30,12 @@ public class MainActivity extends AppCompatActivity {
         mMinTempTv = (TextView) findViewById(R.id.minTempTv);
         mMaxTempTv = (TextView) findViewById(R.id.maxTempTv);
         mDescriptionTv = (TextView) findViewById(R.id.descTv);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        mRecyclerAdapter = new RecyclerAdapter(this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mRecyclerAdapter);
+
         downloadUrl();
 
     }
@@ -96,19 +99,12 @@ public class MainActivity extends AppCompatActivity {
                     WeatherItem weatherItem = new WeatherItem(main, weather, Date);
                     weatherItems.add(weatherItem);
 
-                    mMainWeatherItem.add(weatherItems);
 
-                    mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-
-                    mRecyclerAdapter = new RecyclerAdapter(this, mMainWeatherItem);
-
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-
-                    mRecyclerView.setLayoutManager(layoutManager);
-
-                    mRecyclerView.setAdapter(mRecyclerAdapter);
                 }
+
             }
+
+            mRecyclerAdapter.setmWeatherItems(weatherItems);
             Log.d("DATA", weatherItems.toString());
 
         } catch (JSONException e) {
